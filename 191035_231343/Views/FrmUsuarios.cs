@@ -47,5 +47,10 @@ namespace _191035_231343.Views
         {
             Close();
         }
+
+        private void dgvUsuarios_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+           
+        }
     }
 }

@@ -66,10 +66,61 @@ namespace _191035_231343.Views
 
         private void cboCidades_SelectedIndexChanged(object sender, EventArgs e)
         {
+                    // verificando se ha algo selecionado
             if (cboCidades.SelectedIndex != -1)
             {
                 DataRowView reg = (DataRowView)cboCidades.SelectedItem;
                 txtUF.Text = reg["uf"].ToString();
+            }
+        }
+
+        private void picFoto_Click(object sender, EventArgs e)
+        {
+            ofdArquivo.InitialDirectory = "x:/191035/ds3/";
+            ofdArquivo.FileName = "";
+            ofdArquivo.ShowDialog();
+            picFoto.ImageLocation = ofdArquivo.FileName;
+        }
+
+        private void btnIncluir_Click(object sender, EventArgs e)
+        {
+            if (txtNome.Text == "") return;
+
+            cl = new Cliente()
+            {
+                nome = txtNome.Text,
+                idCidade = (int)cboCidades.SelectedValue,
+                dataNasc = dtpDataNasc.Value,
+                renda = double.Parse(txtRenda.Text),
+                cpf = mskCPF.Text,
+                foto = picFoto.ImageLocation,
+                venda = chkVenda.Checked
+            };
+            cl.Incluir();
+
+            limpaControles();
+            carregarGrid("");
+        }
+
+        private void btnFechar_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void dgvClientes_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if(dgvClientes.RowCount > 0)
+            {
+                txtID.Text = dgvClientes.CurrentRow.Cells["id"].Value.ToString();
+                txtNome.Text = dgvClientes.CurrentRow.Cells["nome"].Value.ToString();
+                txtRenda.Text = dgvClientes.CurrentRow.Cells["renda"].Value.ToString();
+                txtUF.Text = dgvClientes.CurrentRow.Cells["uf"].Value.ToString();
+                cboCidades.Text = dgvClientes.CurrentRow.Cells["cidade"].Value.ToString();
+                chkVenda.Checked = (bool)dgvClientes.CurrentRow.Cells["venda"].Value;
+                mskCPF.Text = dgvClientes.CurrentRow.Cells["cpf"].Value.ToString();
+                dtpDataNasc.Text = dgvClientes.CurrentRow.Cells["dataNasc"].Value.ToString();
+                picFoto.ImageLocation = dgvClientes.CurrentRow.Cells["foto"].Value.ToString();
+
             }
         }
     }
